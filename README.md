@@ -6,20 +6,10 @@ The application provides hardware insights to help you optimize hardware capacit
 
 ## Features
 
-*   **Hardware-Level VRAM Profiling**: Queries your NVIDIA graphics processor directly via `nvidia-smi` to profile physical memory usage rather than relying solely on API-reported values.
-*   **Transient Spike Tracking (`PeakVRAMTracker`)**: Spawns a background thread polling every 50ms during active inference requests to capture transient memory spikes which are missed by standard interval-based polling.
-*   **Velocity & Performance Diagnostics**:
-    *   *Prompt Prefill Velocity*: Prompt processing rate in tokens/second (Prefill Phase).
-    *   *Token Generation Velocity*: Generation rate in tokens/second (Decode Phase).
-    *   *Wall-Clock Durations*: Process response timings for single-stream, saturated context, and parallel queries.
-    *   *Concurrency Slowdown factor*: Calculates the performance degradation ratio under simultaneous multi-user loads.
-*   **Comprehensive 5-Stage Profiling Suite**:
-    1.  **Baseline**: Clears VRAM by dynamically unloading loaded models to measure initial system noise.
-    2.  **Idle Weight Load**: Loads the model weights into GPU memory to establish inactive weight residency.
-    3.  **Active Query**: Runs a single 50-token query to measure prompt evaluation prefill and decode VRAM spikes.
-    4.  **Saturated Context**: Loads the model with customized context windows (e.g. 4096, 8192, 16384 tokens) and processes a saturated context prompt to profile prefill memory thresholds.
-    5.  **Concurrency Stress**: Fires parallel requests concurrently (using thread pooling) to calculate parallel stream KV Cache expansion rate.
-*   **Automatic History Export**: Dynamically creates an `output/` directory and logs clean ASCII-formatted plain-text execution reports prefixed with `YYYYMMDD_HHMMSS_<model_name>.txt` for audit history. All interactive menu screens are stripped from files, saving only the exact benchmark session.
+*   **Hardware-Level VRAM Profiling**: Queries `nvidia-smi` directly for precise physical GPU memory metrics.
+*   **Speed & Performance Diagnostics**: Calculates prompt prefill speed (tokens/s), token generation speed (tokens/s), wall-clock durations, and parallel load slowdown ratios.
+*   **5-Stage Profiling**: Evaluates VRAM at Baseline (empty), Idle weight load, Active query spike, Saturated context thresholds, and Concurrency stress load.
+*   **Automatic History Export**: Saves clean, time-stamped text logs to the `output/` folder, omitting CLI menu frames.
 
 ### Quick Setup
 
