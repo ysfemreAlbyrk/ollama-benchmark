@@ -1,5 +1,5 @@
 [project]
-name = "ollamabench"
+name = "ollamabenchmark"
 version = "0.1.0"
 description = "Ollama GPU/CPU benchmarking and VRAM usage monitoring tool."
 readme = "README.md"
