@@ -1,0 +1,9 @@
+[project]
+name = "ollamabench"
+version = "0.1.0"
+description = "Ollama GPU/CPU benchmarking and VRAM usage monitoring tool."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "rich>=15.0.0",
+]
