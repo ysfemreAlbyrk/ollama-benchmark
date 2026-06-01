@@ -53,24 +53,14 @@ uv run .\benchmark.py
 python benchmark.py
 ```
 
-### Run with Flags
-Run commands directly with explicit flags if you are automating tests, scripting benchmarks, or bypass menus.
-
-#### Basic run with defaults:
-```bash
-uv run .\benchmark.py run qwen3.5:0.8b
-```
-
-#### Run with customized concurrency limit, context window, and custom output path:
+### Help
 
 ```bash
-uv run .\benchmark.py run qwen3.5:0.8b --concurrency 4 --context-size 8192 --gpu 0 --output custom_report.txt
-```
+uv run .\benchmark.py -h
 
-#### List Downloaded Local Models:
+# or
 
-```bash
-uv run .\benchmark.py list
+python .\benchmark.py -h
 ```
 ---
 
