@@ -7,3 +7,15 @@ requires-python = ">=3.14"
 dependencies = [
     "rich>=15.0.0",
 ]
+
+[project.scripts]
+ollamabenchmark = "ollamabenchmark.benchmark:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
+
+

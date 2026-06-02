@@ -3,8 +3,8 @@ import threading
 from typing import Dict, Any, List, Optional
 from rich.console import Console
 from rich.status import Status
-from gpu_monitor import GPUMonitor
-from ollama_client import OllamaClient
+from .gpu_monitor import GPUMonitor
+from .ollama_client import OllamaClient
 
 class PeakVRAMTracker:
     """

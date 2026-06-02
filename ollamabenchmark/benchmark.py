@@ -7,9 +7,9 @@ from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
 from rich.align import Align
-from ollama_client import OllamaClient
-from gpu_monitor import GPUMonitor
-from engine import BenchmarkEngine
+from .ollama_client import OllamaClient
+from .gpu_monitor import GPUMonitor
+from .engine import BenchmarkEngine
 
 console = Console(record=True)
 
