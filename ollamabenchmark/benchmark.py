@@ -23,7 +23,7 @@ def run_benchmark_cmd(args):
         console.print("[bold red]❌ GPU Monitoring Error: nvidia-smi utility not found in system PATH. Cannot profile hardware VRAM.[/bold red]")
         sys.exit(1)
         
-    print_banner()
+    # print_banner()
     
     console.print(Panel(
         f"[bold white]Target Model:[/bold white] [cyan]{args.model}[/cyan]\n"

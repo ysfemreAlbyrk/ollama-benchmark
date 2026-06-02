@@ -35,40 +35,62 @@ def get_key():
 
 
 def show_menu(title: str, options: list, default_index: int = 0) -> int:
-    """Renders an interactive navigable menu using arrow keys and Enter."""
+    """Renders an interactive navigable menu using arrow keys and Enter with zero flicker."""
+    from rich.live import Live
+    from rich.console import Group
+    from rich.text import Text
+    
     current_index = default_index
     
-    while True:
-        os.system("cls" if os.name == "nt" else "clear")
-        print_banner()
-        console.print(f"[bold cyan]{title}[/bold cyan]\n")
+    def generate_content():
+        banner = """[bold cyan]  
+  ██████╗ ██╗     ██╗      █████╗ ███╗   ███╗ █████╗     ██████╗ ███████╗███╗   ██╗ ██████╗██╗  ██╗
+ ██╔═══██╗██║     ██║     ██╔══██╗████╗ ████║██╔══██╗    ██╔══██╗██╔════╝████╗  ██║██╔════╝██║  ██║
+ ██║   ██║██║     ██║     ███████║██╔████╔██║███████║    ██████╔╝█████╗  ██╔██╗ ██║██║     ███████║
+ ██║   ██║██║     ██║     ██╔══██║██║╚██╔╝██║██╔══██║    ██╔══██╗██╔══╝  ██║╚██╗██║██║     ██╔══██║
+ ╚██████╔╝███████╗███████╗██║  ██║██║ ╚═╝ ██║██║  ██║    ██████╔╝███████╗██║ ╚████║╚██████╗██║  ██║
+  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝    ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝[/bold cyan]
+[bold white]========================= OLLAMA VRAM & MEMORY PROFILING CLI =========================[/bold white]"""
+        
+        banner_text = Text.from_markup(banner)
+        menu_text = Text()
+        menu_text.append(f"\n🏠 {title}\n\n", style="bold cyan")
         
         for idx, option in enumerate(options):
             if idx == current_index:
-                console.print(f"  [bold green]➔ [underline]{option}[/underline][/bold green]")
+                menu_text.append(f"  ➔ {option}\n", style="bold green underline")
             else:
-                console.print(f"    {option}")
+                menu_text.append(f"    {option}\n")
                 
-        console.print("\n[dim]Use Up/Down Arrow keys to navigate, press Enter to select.[/dim]")
+        menu_text.append("\nUse Up/Down Arrow keys to navigate, press Enter to select.", style="dim")
         
-        key = get_key()
-        if key == "up":
-            current_index = (current_index - 1) % len(options)
-        elif key == "down":
-            current_index = (current_index + 1) % len(options)
-        elif key == "enter":
-            return current_index
-        elif key == "esc":
-            return -1
-        elif key is None:
-            # Fallback for non-interactive or non-windows environments
-            try:
-                choice = console.input(f"\nSelect option (1-{len(options)}): ").strip()
-                val = int(choice) - 1
-                if 0 <= val < len(options):
-                    return val
-            except (ValueError, KeyboardInterrupt, EOFError):
+        return Group(banner_text, menu_text)
+
+    # Use Rich's Live alternate screen buffer for a flawless, 100% flicker-free full terminal view
+    with Live(generate_content(), console=console, auto_refresh=False, screen=True) as live:
+        while True:
+            live.update(generate_content())
+            live.refresh()
+            
+            key = get_key()
+            if key == "up":
+                current_index = (current_index - 1) % len(options)
+            elif key == "down":
+                current_index = (current_index + 1) % len(options)
+            elif key == "enter":
+                return current_index
+            elif key == "esc":
                 return -1
+            elif key is None:
+                # Fallback for non-interactive terminal pipelines
+                live.stop()
+                try:
+                    choice = console.input(f"\nSelect option (1-{len(options)}): ").strip()
+                    val = int(choice) - 1
+                    if 0 <= val < len(options):
+                        return val
+                except (ValueError, KeyboardInterrupt, EOFError):
+                    return -1
 
 
 def interactive_menu():
@@ -116,7 +138,7 @@ def interactive_menu():
                 if hasattr(console, "_record_buffer"):
                     console._record_buffer.clear()
                     
-                print_banner()
+                # print_banner()
                 console.print(f"[bold cyan]Selected Model:[/bold cyan] [green]{selected_model}[/green]\n")
                 
                 concurrency_input = console.input("[bold white]Concurrency count (parallel queries) [Default: 3]: [/bold white]").strip()
