@@ -5,6 +5,7 @@ from rich.console import Console
 from rich.status import Status
 from .gpu_monitor import GPUMonitor
 from .ollama_client import OllamaClient
+from .config import console as default_console
 
 class PeakVRAMTracker:
     """
@@ -40,10 +41,10 @@ class PeakVRAMTracker:
 
 
 class BenchmarkEngine:
-    def __init__(self, client: OllamaClient, gpu_monitor: GPUMonitor, console: Console):
+    def __init__(self, client: OllamaClient, gpu_monitor: GPUMonitor, console: Optional[Console] = None):
         self.client = client
         self.gpu_monitor = gpu_monitor
-        self.console = console
+        self.console = console or default_console
 
     def format_bytes(self, num_bytes: float) -> str:
         """Utility to format bytes to human-readable string."""
