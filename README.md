@@ -46,21 +46,21 @@ The application provides hardware insights to help you optimize hardware capacit
 ## How to Use
 
 ```bash
-uv run .\benchmark.py
+uv run .\main.py
 
 # or
 
-python benchmark.py
+python main.py
 ```
 
 ### Help
 
 ```bash
-uv run .\benchmark.py -h
+uv run .\main.py -h
 
 # or
 
-python .\benchmark.py -h
+python .\main.py -h
 ```
 ---
 
